@@ -2,6 +2,11 @@ pipeline {
     agent any
 
     stages {
+       stage('Clean Workspace') {
+            steps {
+                deleteDir() // Cleans the workspace before the build
+            }
+        }
         stage('build process of the app') {
             agent {
               docker {
@@ -11,14 +16,8 @@ pipeline {
             }
             steps {
                 
-                sh """ 
-                  node --version
-                  npm --version
-                  ls -la
-                  npm ci
-                  npm run build
-                  ls -la
-                """
+                sh "npm install --verbose"
+                sh "npm run build"
             }
         }
     }
